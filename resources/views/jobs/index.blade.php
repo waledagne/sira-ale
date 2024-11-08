@@ -1,10 +1,11 @@
 <x-layout>
-  <h1>{{$title}}</h1>
-  <ul>
+
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
     @forelse ($jobs as $job)
-    <li>{{$job}}</li>
+  <x-job-card :job="$job" />
     @empty
     <p>No jobs found</p>
-  </ul>
+
   @endforelse
+</div>
 </x-layout>
