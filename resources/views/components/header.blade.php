@@ -8,15 +8,24 @@
             <x-nav-link url='/jobs' :active="request()->is('jobs')">All Jobs</x-nav-link>
             @auth
                 <x-nav-link url='/jobs/saved' :active="request()->is('jobs/saved')">Saved Jobs</x-nav-link>
-                <x-nav-link url='/dashboard' :active="request()->is('dashboard')" icon=gauge>Dashboard</x-nav-link>
+                {{-- <x-nav-link url='/dashboard' :active="request()->is('dashboard')" icon=gauge>Dashboard</x-nav-link> --}}
                 <x-button-link url='/jobs/create' icon='edit '>Create Job</x-button-link>
                 <x-logout-button />
+                <div class="flex items-center space-x-3">
+                    <a href="{{ route('dashboard') }}">
+                        @if (Auth::user()->avatar)
+                            <img src="/storage/{{ Auth::user()->avatar }}" class="w-10 h-10  rounded-full"
+                                alt="{{ Auth::user()->name }}">
+                        @else
+                            <img src="/storage/avatars/default-avatar.png" alt="{{ Auth::user()->name }} Avatar"
+                                class="w-10 h-10 rounded-full">
+                        @endif
+                    </a>
+                </div>
             @else
                 <x-nav-link url='/login' :active="request()->is('login')">Login</x-nav-link>
                 <x-nav-link url='/register' :active="request()->is('register')">Register</x-nav-link>
             @endauth
-
-
 
         </nav>
         <button id="hamburger" class="text-white md:hidden flex items-center" @click = "open = !open"
