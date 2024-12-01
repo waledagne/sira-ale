@@ -8,12 +8,12 @@ use App\Models\Job;
 use Illuminate\Contracts\Support\ValidatedData;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class JobController extends Controller
 {
-  /**
-   * Display a listing of the resource.
-   */
+
+  use AuthorizesRequests;
+
   public function index(): View
   {
     $jobs = Job::all();
@@ -71,6 +71,7 @@ class JobController extends Controller
    */
   public function edit(Job $job): View
   {
+    $this->authorize('update', $job);
     return view('jobs.edit')->with('job', $job);
   }
 
@@ -79,6 +80,7 @@ class JobController extends Controller
    */
   public function update(Request $request, Job $job)
   {
+    $this->authorize('update', $job);
     $validatedData = $request->validate([
       'title' => 'required|string|max:255',
       'description' => 'required|string',
@@ -118,10 +120,15 @@ class JobController extends Controller
    */
   public function destroy(Job $job)
   {
+    $this->authorize('delete', $job);
     if ($job->company_logo) {
       Storage::delete('public/logos' . basename($job->company_logo));
     }
     $job->delete();
+    if(request()->query('from') == 'dashboard'){
+    return redirect()->route('dashboard')->with('success', 'Job deleted successfully');
+
+    }
     return redirect()->route('jobs.index')->with('success', 'Job deleted successfully');
   }
 }
