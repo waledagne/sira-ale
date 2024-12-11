@@ -9,7 +9,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookmarkController;
-
+use App\Http\Controllers\ApplicantController;
 
 Route::get('/',[HomeController::class,'index']) ->name('home');
 Route::resource('jobs',JobController::class) ->middleware('auth')->only(['create','edit','update','destroy']);
@@ -31,3 +31,6 @@ Route::middleware('auth')->group(function(){
     Route::delete('/bookmarks/{job}',[BookmarkController::class,'destroy'])->name('bookmarks.destroy');
 
 });
+
+Route::post('/jobs/{job}/apply', [ApplicantController::class,'store'])->middleware('auth')->name('applicants.store');
+Route::delete('/applicants/{applicant}', [ApplicantController::class, 'destroy'])->name('applicants.destroy')->middleware('auth');

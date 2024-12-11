@@ -9,5 +9,9 @@
 }
 
 .hero {
-    background-image: url("../images/hero.jpg");
+    background-image: url('../images/hero.jpg');
+}
+
+[x-cloak] {
+    display: none !important;
 }
